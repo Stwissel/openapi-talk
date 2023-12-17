@@ -57,23 +57,31 @@ public class MyRouter extends AbstractVerticle {
         final RouterBuilder builder = RouterBuilder.create(this.getVertx(), contract);
 
         /* Hard coded to John Doe and password */
-        BasicAuthHandler johnDoeHandler = (RoutingContext ctx) -> {
-            MultiMap headers = ctx.request().headers();
-            String auth = headers.get("Authorization");
-            // John Doe:password = Sm9obiBEb2U6cGFzc3dvcmQ=
-            if (!"Basic Sm9obiBEb2U6cGFzc3dvcmQ=".equals(auth)) {
-                ctx.fail(401, new Exception("Boiling the TAR, go away"));
-            } else {
-                ctx.next();
+        BasicAuthHandler johnDoeHandler = new BasicAuthHandler() {
+
+            @Override
+            public void handle(RoutingContext ctx) {
+                MultiMap headers = ctx.request().headers();
+                String auth = headers.get("Authorization");
+                // John Doe:password = Sm9obiBEb2U6cGFzc3dvcmQ=
+                if (!"Basic Sm9obiBEb2U6cGFzc3dvcmQ=".equals(auth)) {
+                    ctx.fail(401, new Exception("Boiling the TAR, go away"));
+                } else {
+                    ctx.next();
+                }
             }
         };
 
-        BasicAuthHandler richelieuHandler = (RoutingContext ctx) -> {
-            MultiMap headers = ctx.request().headers();
-            if (!headers.contains("Richelieu")) {
-                ctx.fail(401, new Exception("You are not the Cardinal"));
-            } else {
-                ctx.next();
+        BasicAuthHandler richelieuHandler = new BasicAuthHandler() {
+
+            @Override
+            public void handle(RoutingContext ctx) {
+                MultiMap headers = ctx.request().headers();
+                if (!headers.contains("Richelieu")) {
+                    ctx.fail(401, new Exception("You are not the Cardinal"));
+                } else {
+                    ctx.next();
+                }
             }
         };
 

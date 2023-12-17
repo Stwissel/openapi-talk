@@ -1,0 +1,1388 @@
+{
+	"info": {
+		"_postman_id": "40afeec4-c336-46d7-b8f1-17507dc6a9ea",
+		"name": "Toys",
+		"description": "Demoing the evolution of the Toy spec\n\nContact Support:\n Name: The NotesSensei\n Email: stw@linux.com",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "8459482"
+	},
+	"item": [
+		{
+			"name": "create",
+			"item": [
+				{
+					"name": "Toy blue only",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Color\": \"Blue\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/toys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toys"
+							]
+						},
+						"description": "Creates a new instance of a `Toy`."
+					},
+					"response": [
+						{
+							"name": "Successful response.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"toys"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Toy all fields (no restriction)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Name\": \"Fire truck\",\n  \"Color\": \"red\",\n  \"Shape\": \"square\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/toys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toys"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Successful response.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"toys"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Extra field prohibited",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Name\": \"Fire truck\",\n  \"Color\": \"red\",\n  \"Shape\": \"square\",\n  \"Price\" : 42.0\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/strict/toys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"strict",
+								"toys"
+							]
+						},
+						"description": "Creates a new instance of a `Toy`."
+					},
+					"response": [
+						{
+							"name": "Successful response.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Color\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/strict/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"strict",
+										"toys"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Toy extra field",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Name\": \"Fire truck\",\n  \"Color\": \"red\",\n  \"Shape\": \"square\",\n  \"Price\" : 42.0\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/toys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toys"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Successful response.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"toys"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Trafficlight colors only (OK)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Name\": \"ball\",\n  \"Color\": \"red\",\n  \"Shape\": \"round\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/limitedcolor/toys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"limitedcolor",
+								"toys"
+							]
+						},
+						"description": "Creates a new instance of a `Toy`."
+					},
+					"response": [
+						{
+							"name": "Successful response.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"red\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/limitedcolor/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"limitedcolor",
+										"toys"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "That request was s..t",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"red\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/limitedcolor/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"limitedcolor",
+										"toys"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\"\n}"
+						},
+						{
+							"name": "That request tanked",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"red\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/limitedcolor/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"limitedcolor",
+										"toys"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Trafficlight colors only - try pink",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Name\": \"ball\",\n  \"Color\": \"pink\",\n  \"Shape\": \"square\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/limitedcolor/toys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"limitedcolor",
+								"toys"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Successful response.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"red\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/limitedcolor/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"limitedcolor",
+										"toys"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "That request was s..t",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"red\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/limitedcolor/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"limitedcolor",
+										"toys"
+									]
+								}
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\"\n}"
+						},
+						{
+							"name": "That request tanked",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"red\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/limitedcolor/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"limitedcolor",
+										"toys"
+									]
+								}
+							},
+							"status": "Internal Server Error",
+							"code": 500,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"code\": \"<integer>\",\n  \"message\": \"<string>\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "secure",
+			"item": [
+				{
+					"name": "Create a Toy (without auth)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Color\": \"Blue\",\n  \"Name\": \"Moon\",\n  \"Shape\": \"Round\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/secure/toys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"secure",
+								"toys"
+							]
+						},
+						"description": "Creates a new instance of a `Toy`."
+					},
+					"response": [
+						{
+							"name": "Successful response.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: basic",
+										"key": "Authorization",
+										"value": "Basic <credentials>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Color\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/secure/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"secure",
+										"toys"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create a Toy (with auth)",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "password",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "John Doe",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Color\": \"red\",\n  \"Name\": \"ball\",\n  \"Shape\": \"round\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/secure/toys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"secure",
+								"toys"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Successful response.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: basic",
+										"key": "Authorization",
+										"value": "Basic <credentials>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Color\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/secure/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"secure",
+										"toys"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Create a Toy (with alternate auth)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							},
+							{
+								"key": "Richelieu",
+								"value": "For king and France",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Color\": \"red\",\n  \"Name\": \"ball\",\n  \"Shape\": \"round\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/secure2/toys",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"secure2",
+								"toys"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Successful response.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									},
+									{
+										"description": "Added as a part of security scheme: basic",
+										"key": "Authorization",
+										"value": "Basic <credentials>"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Color\": \"<string>\",\n  \"Name\": \"<string>\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/secure/toys",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"secure",
+										"toys"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "other toy methods",
+			"item": [
+				{
+					"name": "List All Toys",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/toys?color={{$randomColor}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toys"
+							],
+							"query": [
+								{
+									"key": "color",
+									"value": "{{$randomColor}}",
+									"description": "Limit to a color"
+								}
+							]
+						},
+						"description": "Gets a list of all `Toy` entities."
+					},
+					"response": [
+						{
+							"name": "Successful response - returns an array of `Toy` entities.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/toys?color=<string>",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"toys"
+									],
+									"query": [
+										{
+											"key": "color",
+											"value": "<string>",
+											"description": "Limit to a color"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "[\n  {\n    \"Name\": \"<string>\",\n    \"Color\": \"<string>\",\n    \"Shape\": \"<string>\"\n  },\n  {\n    \"Name\": \"<string>\",\n    \"Color\": \"<string>\",\n    \"Shape\": \"<string>\"\n  }\n]"
+						}
+					]
+				},
+				{
+					"name": "Get a Toy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/toys/:toyId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toys",
+								":toyId"
+							],
+							"variable": [
+								{
+									"key": "toyId",
+									"value": "<string>",
+									"description": "(Required) A unique identifier for a `Toy`."
+								}
+							]
+						},
+						"description": "Gets the details of a single instance of a `Toy`."
+					},
+					"response": [
+						{
+							"name": "Successful response - returns a single `Toy`.",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/toys/:toyId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"toys",
+										":toyId"
+									],
+									"variable": [
+										{
+											"key": "toyId"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Update a Toy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Accept",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}",
+							"options": {
+								"raw": {
+									"headerFamily": "json",
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/toys/:toyId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toys",
+								":toyId"
+							],
+							"variable": [
+								{
+									"key": "toyId",
+									"value": "<string>",
+									"description": "(Required) A unique identifier for a `Toy`."
+								}
+							]
+						},
+						"description": "Updates an existing `Toy`."
+					},
+					"response": [
+						{
+							"name": "Successful response.",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}",
+									"options": {
+										"raw": {
+											"headerFamily": "json",
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/toys/:toyId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"toys",
+										":toyId"
+									],
+									"variable": [
+										{
+											"key": "toyId"
+										}
+									]
+								}
+							},
+							"status": "Accepted",
+							"code": 202,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								}
+							],
+							"cookie": [],
+							"body": "{\n  \"Name\": \"<string>\",\n  \"Color\": \"<string>\",\n  \"Shape\": \"<string>\"\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete a Toy",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{baseUrl}}/toys/:toyId",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"toys",
+								":toyId"
+							],
+							"variable": [
+								{
+									"key": "toyId",
+									"value": "<string>",
+									"description": "(Required) A unique identifier for a `Toy`."
+								}
+							]
+						},
+						"description": "Deletes an existing `Toy`."
+					},
+					"response": [
+						{
+							"name": "Successful response.",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/toys/:toyId",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"toys",
+										":toyId"
+									],
+									"variable": [
+										{
+											"key": "toyId"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "http://localhost:8080/"
+		}
+	]
+}
