@@ -1,56 +1,50 @@
 # openapi-talk
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+This is the code repository for the talk [OpenAPI - whe what, wyh and how](https://stwissel.github.io/presentations/OpenAPI2023/index.html) ([Repo](https://github.com/Stwissel/presentations))
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+This project uses Quarkus, the Supersonic Subatomic Java Framework. If you want to learn more about Quarkus, please visit [its website](https://quarkus.io/).
+
+## Prerequisites
+
+- current Java (tested with 17)
+- Apache maven installed (and on the path)
+- Postman when you want to use the postman collection
 
 ## Running the application in dev mode
 
-You can run your application in dev mode that enables live coding using:
-```shell script
-./mvnw compile quarkus:dev
+That's what you want since it allows hot reload (a.k.a live coding):
+
+```bash
+mvn compile quarkus:dev
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+You now can interact with the application on port `8080`
 
-## Packaging and running the application
+- `/` -> Hello world (no Demo without Hello World)
+- `http://localhost:8080/q/dev/` -> Quarkus dev UI
+- any route defined in openapidemo.yaml
 
-The application can be packaged using:
-```shell script
-./mvnw package
-```
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
+## Packaging and running
 
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
+Follow the Quarkus [documentation](https://quarkus.io/)
 
-If you want to build an _über-jar_, execute the following command:
-```shell script
-./mvnw package -Dquarkus.package.type=uber-jar
-```
+The application can be packaged and run as `quarkus-run.jar` using:
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using: 
-```shell script
-./mvnw package -Dnative
+```bash
+mvn package
+java -jar target/quarkus-app/quarkus-run.jar
 ```
 
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using: 
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
+To build an _über-jar_ execute the following command:
+
+```bash
+mvn package -Dquarkus.package.type=uber-jar
+java -jar target/*-runner.jar
 ```
 
-You can then execute your native executable with: `./target/openapi-talk-1.0.0-SNAPSHOT-runner`
+There are options for containers or native executables described in the Quarkus documentation.
+If you want to learn more, [please consult](https://quarkus.io/guides/maven-tooling).
 
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
+## Postman
 
-## Provided Code
-
-### RESTEasy Reactive
-
-Easily start your Reactive RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
+In `src/main/postman` there's a postman collection you can use to interact with the API to learn about its behaviors

@@ -1,25 +1,30 @@
-/* (C) 2023 notessensei, Apache-2.0 license */
+/* (C) 2023, 2024 notessensei, Apache-2.0 license */
 
 package com.notessensei.openapidemo;
 
+import java.util.List;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
-import io.vertx.core.MultiMap;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.handler.BasicAuthHandler;
 import io.vertx.ext.web.openapi.router.OpenAPIRoute;
 import io.vertx.ext.web.openapi.router.RouterBuilder;
 import io.vertx.openapi.contract.OpenAPIContract;
 import io.vertx.openapi.contract.Operation;
+import io.vertx.openapi.contract.SecurityRequirement;
 import io.vertx.openapi.validation.RequestParameter;
 import io.vertx.openapi.validation.ValidatedRequest;
 import io.vertx.openapi.validation.ValidatorException;
 import jakarta.enterprise.context.ApplicationScoped;
 
+/**
+ * This class represents a router for handling HTTP requests in the OpenAPI demo application.
+ * It extends the AbstractVerticle class and is responsible for starting and stopping the server,
+ * defining router actions, and setting up routes.
+ */
 @ApplicationScoped
 public class MyRouter extends AbstractVerticle {
 
@@ -37,6 +42,11 @@ public class MyRouter extends AbstractVerticle {
         stopPromise.complete();
     }
 
+    /**
+     * Starts the server and sets up the router actions.
+     *
+     * @param promise
+     */
     void bringupTheServer(Promise<Void> promise) {
 
         HttpServer server = vertx.createHttpServer();
@@ -56,38 +66,21 @@ public class MyRouter extends AbstractVerticle {
     Future<Router> defineRouterActions(final OpenAPIContract contract) {
         final RouterBuilder builder = RouterBuilder.create(this.getVertx(), contract);
 
-        /* Hard coded to John Doe and password */
-        BasicAuthHandler johnDoeHandler = new BasicAuthHandler() {
-
-            @Override
-            public void handle(RoutingContext ctx) {
-                MultiMap headers = ctx.request().headers();
-                String auth = headers.get("Authorization");
-                // John Doe:password = Sm9obiBEb2U6cGFzc3dvcmQ=
-                if (!"Basic Sm9obiBEb2U6cGFzc3dvcmQ=".equals(auth)) {
-                    ctx.fail(401, new Exception("Boiling the TAR, go away"));
-                } else {
-                    ctx.next();
-                }
-            }
-        };
-
-        BasicAuthHandler richelieuHandler = new BasicAuthHandler() {
-
-            @Override
-            public void handle(RoutingContext ctx) {
-                MultiMap headers = ctx.request().headers();
-                if (!headers.contains("Richelieu")) {
-                    ctx.fail(401, new Exception("You are not the Cardinal"));
-                } else {
-                    ctx.next();
-                }
-            }
-        };
-
-        // Security Schemes
-        builder.security("UserPassword").httpHandler(johnDoeHandler);
-        builder.security("Richelieu").httpHandler(richelieuHandler);
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        // All the security schemes and handlers
+        final List<SecurityRequirement> allRequirements = contract.getSecurityRequirements();
+        allRequirements.forEach(req -> {
+            System.out.println("Security Requirement: " + req);
+            req.getNames().forEach(scheme -> {
+                System.out.println("Scheme: " + scheme);
+                Utils.getAuthenticationHandler(scheme, classLoader)
+                        .ifPresentOrElse(handler -> builder.security(scheme).httpHandler(handler),
+                                () -> {
+                                    System.out.println("No handler for " + scheme);
+                                    // Throw something here
+                                });
+            });
+        });
 
         // individual actions
         builder.getRoutes().forEach(this::setupRoute);
