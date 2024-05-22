@@ -8,7 +8,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import org.yaml.snakeyaml.Yaml;
+import io.vertx.core.Handler;
 import io.vertx.core.json.JsonObject;
+import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BasicAuthHandler;
 import io.vertx.openapi.impl.OpenAPIYamlConstructor;
 
@@ -17,15 +19,28 @@ import io.vertx.openapi.impl.OpenAPIYamlConstructor;
  */
 public class Utils {
 
-    public static Optional<BasicAuthHandler> getAuthenticationHandler(final String name,
-            final ClassLoader classLoader) {
+    public static Optional<BasicAuthHandler> getAuthenticationHandler(final String name) {
         final String className = "com.notessensei.openapidemo.security." + name;
         try {
-            Class<?> clazz = Class.forName(className, false, classLoader);
+            Class<?> clazz = Class.forName(className);
             return Optional
                     .of((BasicAuthHandler) clazz.getDeclaredConstructor().newInstance());
         } catch (Exception e) {
             e.printStackTrace();
+        }
+        return Optional.empty();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Optional<Handler<RoutingContext>> getRouteHandler(final String name) {
+        final String className = "com.notessensei.openapidemo.handlers."
+                + name.substring(0, 1).toUpperCase() + name.substring(1);
+        try {
+            Class<?> clazz = Class.forName(className);
+            return Optional
+                    .of((Handler<RoutingContext>) clazz.getDeclaredConstructor().newInstance());
+        } catch (Exception e) {
+            System.out.println("Handler not found: " + className + " falling back to EchoHandler");
         }
         return Optional.empty();
     }

@@ -2,21 +2,23 @@
 
 package com.notessensei.openapidemo;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Optional;
+import java.util.Set;
+import com.notessensei.openapidemo.handlers.EchoHandler;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.BasicAuthHandler;
 import io.vertx.ext.web.openapi.router.OpenAPIRoute;
 import io.vertx.ext.web.openapi.router.RouterBuilder;
 import io.vertx.openapi.contract.OpenAPIContract;
 import io.vertx.openapi.contract.Operation;
-import io.vertx.openapi.contract.SecurityRequirement;
-import io.vertx.openapi.validation.RequestParameter;
-import io.vertx.openapi.validation.ValidatedRequest;
 import io.vertx.openapi.validation.ValidatorException;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -66,21 +68,23 @@ public class MyRouter extends AbstractVerticle {
     Future<Router> defineRouterActions(final OpenAPIContract contract) {
         final RouterBuilder builder = RouterBuilder.create(this.getVertx(), contract);
 
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
         // All the security schemes and handlers
-        final List<SecurityRequirement> allRequirements = contract.getSecurityRequirements();
-        allRequirements.forEach(req -> {
-            System.out.println("Security Requirement: " + req);
-            req.getNames().forEach(scheme -> {
-                System.out.println("Scheme: " + scheme);
-                Utils.getAuthenticationHandler(scheme, classLoader)
-                        .ifPresentOrElse(handler -> builder.security(scheme).httpHandler(handler),
-                                () -> {
-                                    System.out.println("No handler for " + scheme);
-                                    // Throw something here
-                                });
+        final Set<String> schemes = new HashSet<>();
+        contract.getSecurityRequirements().stream()
+                .flatMap(sr -> sr.getNames().stream())
+                .forEach(scheme -> {
+                    System.out.println("Scheme: " + scheme);
+                    schemes.add(scheme);
+                });
+
+        schemes.forEach(scheme -> {
+            Optional<BasicAuthHandler> handler = Utils.getAuthenticationHandler(scheme);
+            handler.ifPresent(h -> {
+                System.out.println("Adding security handler for " + scheme);
+                builder.security(scheme).httpHandler(h);
             });
         });
+
 
         // individual actions
         builder.getRoutes().forEach(this::setupRoute);
@@ -94,13 +98,27 @@ public class MyRouter extends AbstractVerticle {
         return Future.succeededFuture(router);
     }
 
+    /**
+     * Sets up a route based on the provided OpenAPIRoute.
+     *
+     * @param route The OpenAPIRoute object containing the route information.
+     */
     void setupRoute(final OpenAPIRoute route) {
         Operation operation = route.getOperation();
         System.out.println("Found Operation " + operation.getOperationId());
-        route.addHandler(this::echoHandler);
+        Handler<RoutingContext> handler =
+                Utils.getRouteHandler(operation.getOperationId()).orElse(new EchoHandler());
+        route.addHandler(handler);
         route.addFailureHandler(this::youScrewedUp);
     }
 
+    /**
+     * Handles the case when something goes wrong in the routing process.
+     * If there is a failure, it sets the appropriate status code and response message.
+     * If there is no failure, it sets the status code to 500 and returns a generic error message.
+     *
+     * @param ctx the routing context
+     */
     void youScrewedUp(RoutingContext ctx) {
         Throwable f = ctx.failure();
         ctx.response().putHeader("content-type", "application/json; charset=UTF8");
@@ -117,25 +135,4 @@ public class MyRouter extends AbstractVerticle {
         ctx.response().setStatusCode(screwup)
                 .end(response.toBuffer());
     }
-
-    void echoHandler(RoutingContext ctx) {
-        ValidatedRequest request = ctx.get(RouterBuilder.KEY_META_DATA_VALIDATED_REQUEST);
-        RequestParameter body = request.getBody();
-        JsonObject reply = new JsonObject();
-        JsonObject query = new JsonObject();
-        JsonObject headers = new JsonObject();
-        JsonObject pathparam = new JsonObject();
-        reply.put("pathparam", pathparam)
-                .put("headers", headers)
-                .put("query", query)
-                .put("body", body.get());
-        request.getQuery().entrySet()
-                .forEach(entry -> query.put(entry.getKey(), entry.getValue()));
-        request.getHeaders().entrySet()
-                .forEach(entry -> headers.put(entry.getKey(), entry.getValue()));
-        ctx.response()
-                .putHeader("content-type", "application/json")
-                .end(reply.encode());
-    }
-
 }
