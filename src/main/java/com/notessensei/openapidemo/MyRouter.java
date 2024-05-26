@@ -52,7 +52,9 @@ public class MyRouter extends AbstractVerticle {
     void bringupTheServer(Promise<Void> promise) {
 
         HttpServer server = vertx.createHttpServer();
-        JsonObject spec = Utils.jsonFromResource(OPENAPI);
+        JsonObject spec = OPENAPI.endsWith(".yaml")
+                ? Utils.jsonFromYamlResource(OPENAPI)
+                : Utils.jsonFromResource(OPENAPI);
 
         OpenAPIContract.from(this.getVertx(), spec)
                 .compose(this::defineRouterActions)
