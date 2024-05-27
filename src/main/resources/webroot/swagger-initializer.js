@@ -10,11 +10,14 @@ function bootstrapSwagger() {
 
   window.ui = SwaggerUIBundle({
     dom_id: '#swagger-ui',
-    docExpansion: 'all',
+    docExpansion: 'full',
     deepLinking: true,
     presets: [SwaggerUIBundle.presets.apis, SwaggerUIStandalonePreset],
     displayOperationId: true,
     displayRequestDuration: true,
+    defaultModelsExpandDepth: 10,
+    defaultModelExpandDepth: 10,
+    defaultExpanded: true,
     showExtensions: true,
     showCommonExtensions: true,
     syntaxHighlight: { activate: true, theme: 'monokai' },

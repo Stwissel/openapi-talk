@@ -126,7 +126,6 @@ public class MyRouter extends AbstractVerticle {
     }
 
     Future<Router> manualRoutes(final Router router) {
-        router.route("/").handler(ctx -> ctx.response().end("Hello World"));
 
         /* Create the handler for the Swagger UI */
         String source = "META-INF/resources/webjars/swagger-ui/5.17.11";
@@ -154,7 +153,7 @@ public class MyRouter extends AbstractVerticle {
                 .setIndexPage("index.html")
                 .setDefaultContentEncoding("UTF-8");
 
-        router.route().handler(root);
+        router.route().order(999).handler(root);
 
         return Future.succeededFuture(router);
     }
