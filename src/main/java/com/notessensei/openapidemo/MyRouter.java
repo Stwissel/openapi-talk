@@ -6,15 +6,19 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import com.notessensei.openapidemo.handlers.EchoHandler;
+import io.quarkus.runtime.util.StringUtil;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
 import io.vertx.core.Handler;
 import io.vertx.core.Promise;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BasicAuthHandler;
+import io.vertx.ext.web.handler.FileSystemAccess;
+import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.openapi.router.OpenAPIRoute;
 import io.vertx.ext.web.openapi.router.RouterBuilder;
 import io.vertx.openapi.contract.OpenAPIContract;
@@ -30,7 +34,24 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class MyRouter extends AbstractVerticle {
 
-    static final String OPENAPI = "/openapidemo.json";
+    static final String OPENAPI = "/webroot/openapidemo.json";
+    static final String DEFAULT_CSP_VALUE = "default-src 'self'; img-src 'self' data:;";
+    static final String HEADER_CSP = "Content-Security-Policy";
+
+    static Handler<RoutingContext> createContentSecurityHeaderHandler(
+            final String cspValue) {
+        return ctx -> {
+            final String realValue =
+                    StringUtil.isNullOrEmpty(cspValue) ? DEFAULT_CSP_VALUE : cspValue;
+            final HttpServerResponse response = ctx.response();
+            if (response.headers().contains(HEADER_CSP)) {
+                response.headers().remove(HEADER_CSP);
+            }
+            response.putHeader(HEADER_CSP, realValue);
+            ctx.next();
+        };
+    }
+
 
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
@@ -59,12 +80,21 @@ public class MyRouter extends AbstractVerticle {
         OpenAPIContract.from(this.getVertx(), spec)
                 .compose(this::defineRouterActions)
                 .compose(this::manualRoutes)
+                .compose(this::addCspHandler)
                 .compose(router -> server.requestHandler(router).listen(8080))
                 .onSuccess(r -> {
                     System.out.printf("%nServer up and running on port %s%n%n", r.actualPort());
                     promise.complete();
                 })
                 .onFailure(promise::fail);
+    }
+
+    Future<Router> addCspHandler(final Router router) {
+
+        // Ensure csp comes first
+        Handler<RoutingContext> cspHandler = createContentSecurityHeaderHandler(null);
+        router.route().order(-1).handler(cspHandler);
+        return Future.succeededFuture(router);
     }
 
     Future<Router> defineRouterActions(final OpenAPIContract contract) {
@@ -97,6 +127,35 @@ public class MyRouter extends AbstractVerticle {
 
     Future<Router> manualRoutes(final Router router) {
         router.route("/").handler(ctx -> ctx.response().end("Hello World"));
+
+        /* Create the handler for the Swagger UI */
+        String source = "META-INF/resources/webjars/swagger-ui/5.17.11";
+
+
+        Handler<RoutingContext> initHandler = ctx -> {
+            ctx.response().putHeader("content-type", "application/javascript; charset=UTF8");
+            vertx.fileSystem().readFile("webroot/swagger-initializer.js")
+                    .onSuccess(buffer -> ctx.response().end(buffer))
+                    .onFailure(ctx::fail);
+        };
+        router.route("/openapi/swagger-initializer.js").handler(initHandler);
+
+        StaticHandler swaggerUI = StaticHandler.create(FileSystemAccess.RELATIVE, source)
+                .setFilesReadOnly(true)
+                .setIndexPage("index.html")
+                .setDefaultContentEncoding("UTF-8");
+
+        router.route("/openapi/*").handler(swaggerUI);
+
+
+        /* Static Router catch all, must be last */
+        StaticHandler root = StaticHandler.create()
+                .setFilesReadOnly(true)
+                .setIndexPage("index.html")
+                .setDefaultContentEncoding("UTF-8");
+
+        router.route().handler(root);
+
         return Future.succeededFuture(router);
     }
 

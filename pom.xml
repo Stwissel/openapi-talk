@@ -72,6 +72,12 @@
       <artifactId>vertx-auth-common</artifactId>
       <version>${vertx.version}</version>
     </dependency>
+    <!-- Swagger UI -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>swagger-ui</artifactId>
+      <version>5.17.11</version>
+    </dependency>
     <dependency>
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-jackson</artifactId>
