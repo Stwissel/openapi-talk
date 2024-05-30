@@ -67,10 +67,18 @@
       <artifactId>vertx-web</artifactId>
       <version>${vertx.version}</version>
     </dependency>
+
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-auth-common</artifactId>
       <version>${vertx.version}</version>
+    </dependency>
+
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-junit5</artifactId>
+      <version>${vertx.version}</version>
+      <scope>test</scope>
     </dependency>
     <!-- Swagger UI -->
     <dependency>

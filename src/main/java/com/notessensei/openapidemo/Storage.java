@@ -25,7 +25,7 @@ public enum Storage {
 
 
     public Optional<JsonObject> getToy(String name) {
-        System.out.println(name);
+        System.out.println("Searching for:" + name);
         System.out.println(toys.encodePrettily());
         if (toys.containsKey(name)) {
             return Optional.of(toys.getJsonObject(name));

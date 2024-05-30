@@ -18,6 +18,13 @@ import jakarta.enterprise.inject.Instance;
  */
 public class App {
 
+    public static void main(String[] args) {
+        System.out.println("Manually starting the application.");
+        Vertx vertx = Vertx.vertx();
+        vertx.deployVerticle(new MyRouter());
+        System.out.println("Application started.");
+    }
+
     /**
      * Initializes the application on startup.
      *
