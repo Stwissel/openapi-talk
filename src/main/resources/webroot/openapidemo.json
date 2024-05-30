@@ -45,9 +45,7 @@
                     }
                 },
                 "security": [
-                    {
-
-                    }
+                    {}
                 ],
                 "operationId": "getToys",
                 "summary": "List All Toys",
@@ -78,9 +76,7 @@
                     }
                 },
                 "security": [
-                    {
-
-                    }
+                    {}
                 ],
                 "operationId": "createToy",
                 "summary": "Create a Toy",
@@ -114,9 +110,7 @@
                     }
                 },
                 "security": [
-                    {
-
-                    }
+                    {}
                 ],
                 "operationId": "getToy",
                 "summary": "Get a Toy",
@@ -147,9 +141,7 @@
                     }
                 },
                 "security": [
-                    {
-
-                    }
+                    {}
                 ],
                 "operationId": "updateToy",
                 "summary": "Update a Toy",
@@ -162,9 +154,7 @@
                     }
                 },
                 "security": [
-                    {
-
-                    }
+                    {}
                 ],
                 "operationId": "deleteToy",
                 "summary": "Delete a Toy",
@@ -216,9 +206,7 @@
                     }
                 },
                 "security": [
-                    {
-
-                    }
+                    {}
                 ],
                 "operationId": "createToyColor",
                 "summary": "Create a Toy",
@@ -253,9 +241,7 @@
                     }
                 },
                 "security": [
-                    {
-
-                    }
+                    {}
                 ],
                 "operationId": "createActualToy",
                 "summary": "Create a Toy",
@@ -290,9 +276,7 @@
                     }
                 },
                 "security": [
-                    {
-
-                    }
+                    {}
                 ],
                 "operationId": "createToyRequired",
                 "summary": "Create a Toy",
@@ -328,8 +312,7 @@
                 },
                 "security": [
                     {
-                        "UserPassword": [
-                        ]
+                        "UserPassword": []
                     }
                 ],
                 "operationId": "createToySecure",
@@ -366,8 +349,7 @@
                 },
                 "security": [
                     {
-                        "Richelieu": [
-                        ]
+                        "Richelieu": []
                     }
                 ],
                 "operationId": "createToySecure2",
@@ -403,9 +385,7 @@
                     }
                 },
                 "security": [
-                    {
-
-                    }
+                    {}
                 ],
                 "operationId": "createToyStrict",
                 "summary": "Create a Toy",
@@ -467,7 +447,6 @@
                         "type": "string"
                     }
                 },
-                "additionalProperties": false,
                 "example": {
                     "Name": "Matchbox",
                     "Color": "red",
@@ -559,15 +538,9 @@
                     }
                 },
                 "example": {
-                    "pathparam": {
-
-                    },
-                    "headers": {
-
-                    },
-                    "query": {
-
-                    },
+                    "pathparam": {},
+                    "headers": {},
+                    "query": {},
                     "body": {
                         "Color": "red",
                         "Name": "ball",
@@ -593,7 +566,6 @@
                         "type": "string"
                     }
                 },
-                "additionalProperties": false,
                 "example": {
                     "Name": "Matchbox",
                     "Color": "red",
@@ -637,22 +609,16 @@
         }
     },
     "security": [
+        {},
         {
-
+            "UserPassword": []
         },
         {
-            "UserPassword": [
-            ]
+            "Richelieu": []
         },
         {
-            "Richelieu": [
-            ]
-        },
-        {
-            "UserPassword": [
-            ],
-            "Richelieu": [
-            ]
+            "UserPassword": [],
+            "Richelieu": []
         }
     ],
     "tags": [

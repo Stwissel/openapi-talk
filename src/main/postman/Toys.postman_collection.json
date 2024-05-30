@@ -17,13 +17,13 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 200\", function () {",
-									"    pm.response.to.have.status(200);",
+									"pm.test(\"Status code is 400\", function () {",
+									"    pm.response.to.have.status(400);",
 									"});",
 									"",
-									"pm.test(\"body is empty\", function () {",
+									"pm.test(\"body has message\", function () {",
 									"    var jsonData = pm.response.json();",
-									"    pm.expect(jsonData.body).to.be.empty;",
+									"    pm.expect(jsonData).to.haveOwnProperty('message');",
 									"});"
 								],
 								"type": "text/javascript",
@@ -296,8 +296,8 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Status code is 400\", function () {",
-									"    pm.response.to.have.status(400);",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
 									"});"
 								],
 								"type": "text/javascript",
