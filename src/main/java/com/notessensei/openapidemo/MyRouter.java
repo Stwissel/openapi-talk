@@ -18,11 +18,13 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BasicAuthHandler;
 import io.vertx.ext.web.handler.FileSystemAccess;
+import io.vertx.ext.web.handler.HttpException;
 import io.vertx.ext.web.handler.StaticHandler;
 import io.vertx.ext.web.openapi.router.OpenAPIRoute;
 import io.vertx.ext.web.openapi.router.RouterBuilder;
 import io.vertx.openapi.contract.OpenAPIContract;
 import io.vertx.openapi.contract.Operation;
+import io.vertx.openapi.validation.ValidatorErrorType;
 import io.vertx.openapi.validation.ValidatorException;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -182,17 +184,21 @@ public class MyRouter extends AbstractVerticle {
     void youScrewedUp(RoutingContext ctx) {
         Throwable f = ctx.failure();
         ctx.response().putHeader("content-type", "application/json; charset=UTF8");
-        if (f == null) {
-            ctx.response()
-                    .setStatusCode(500)
-                    .end("{\"code\": 500, \"message\": \"Unspecified screwup -> we are really sorry \"}");
-            return;
-        }
-        int screwup = f instanceof ValidatorException ? 400 : ctx.statusCode();
+
         JsonObject response = new JsonObject()
-                .put("code", screwup)
-                .put("message", f.getMessage());
-        ctx.response().setStatusCode(screwup)
+                .put("message", f.getMessage())
+                .put("code", ctx.statusCode());
+
+        if (f instanceof ValidatorException) {
+            ValidatorException ve = (ValidatorException) f;
+            ValidatorErrorType vet = ve.type();
+            response.put("type", vet.toString());
+        } else if (f instanceof HttpException) {
+            HttpException he = (HttpException) f;
+            response.put("payload", he.getPayload());
+        }
+        ctx.response()
+                .setStatusCode(ctx.statusCode())
                 .end(response.toBuffer());
     }
 }
