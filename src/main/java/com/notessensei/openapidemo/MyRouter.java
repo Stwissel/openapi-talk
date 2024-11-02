@@ -113,7 +113,8 @@ public class MyRouter extends AbstractVerticle {
             Optional<BasicAuthHandler> handler = Utils.getAuthenticationHandler(scheme);
             handler.ifPresent(h -> {
                 System.out.println("Adding security handler for " + scheme);
-                builder.security(scheme).httpHandler(h);
+                // TODO: this doesn't work in 4.5.10 or 4.5.11, but in 5.0.0-SNAPSHOT
+                // builder.security(scheme).httpHandler(h);
             });
         });
 

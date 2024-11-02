@@ -17,7 +17,9 @@
     <quarkus.platform.version>3.16.1</quarkus.platform.version>
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
-    <vertx.version>5.0.0-SNAPSHOT</vertx.version>
+    <!-- <vertx.version>4.5.10</vertx.version> -->
+    <!-- <vertx.version>5.0.0-SNAPSHOT</vertx.version> -->
+    <vertx.version>4.5.11-SNAPSHOT</vertx.version>
   </properties>
   <repositories>
     <repository>
