@@ -23,16 +23,20 @@ class MyRouterTest {
 
     @BeforeAll
     static void deploy_verticle(Vertx vertx, VertxTestContext testContext) {
-        vertx.deployVerticle(new MyRouter(), testContext.succeeding(id -> {
-            verticleId = id;
-            testContext.completeNow();
-        }));
+        vertx.deployVerticle(new MyRouter())
+                .onFailure(testContext::failNow)
+                .onSuccess(id -> {
+                    verticleId = id;
+                    testContext.completeNow();
+                });
     }
 
     @AfterAll
     static void undeploy_verticle(Vertx vertx, VertxTestContext testContext) {
         if (verticleId != null) {
-            vertx.undeploy(verticleId, testContext.succeeding(v -> testContext.completeNow()));
+            vertx.undeploy(verticleId)
+                    .onFailure(testContext::failNow)
+                    .onSuccess(v -> testContext.completeNow());
         } else {
             testContext.completeNow();
         }

@@ -27,8 +27,10 @@ import io.vertx.openapi.validation.ValidatorException;
 import jakarta.enterprise.context.ApplicationScoped;
 
 /**
- * This class represents a router for handling HTTP requests in the OpenAPI demo application.
- * It extends the AbstractVerticle class and is responsible for starting and stopping the server,
+ * This class represents a router for handling HTTP requests in the OpenAPI demo
+ * application.
+ * It extends the AbstractVerticle class and is responsible for starting and
+ * stopping the server,
  * defining router actions, and setting up routes.
  */
 @ApplicationScoped
@@ -41,8 +43,7 @@ public class MyRouter extends AbstractVerticle {
     static Handler<RoutingContext> createContentSecurityHeaderHandler(
             final String cspValue) {
         return ctx -> {
-            final String realValue =
-                    StringUtil.isNullOrEmpty(cspValue) ? DEFAULT_CSP_VALUE : cspValue;
+            final String realValue = StringUtil.isNullOrEmpty(cspValue) ? DEFAULT_CSP_VALUE : cspValue;
             final HttpServerResponse response = ctx.response();
             if (response.headers().contains(HEADER_CSP)) {
                 response.headers().remove(HEADER_CSP);
@@ -51,7 +52,6 @@ public class MyRouter extends AbstractVerticle {
             ctx.next();
         };
     }
-
 
     @Override
     public void start(Promise<Void> startPromise) throws Exception {
@@ -117,7 +117,6 @@ public class MyRouter extends AbstractVerticle {
             });
         });
 
-
         // individual actions
         builder.getRoutes().forEach(this::setupRoute);
 
@@ -129,7 +128,6 @@ public class MyRouter extends AbstractVerticle {
 
         /* Create the handler for the Swagger UI */
         String source = "META-INF/resources/webjars/swagger-ui/5.17.11";
-
 
         Handler<RoutingContext> initHandler = ctx -> {
             ctx.response().putHeader("content-type", "application/javascript; charset=UTF8");
@@ -145,7 +143,6 @@ public class MyRouter extends AbstractVerticle {
                 .setDefaultContentEncoding("UTF-8");
 
         router.route("/openapi/*").handler(swaggerUI);
-
 
         /* Static Router catch all, must be last */
         StaticHandler root = StaticHandler.create()
@@ -166,16 +163,17 @@ public class MyRouter extends AbstractVerticle {
     void setupRoute(final OpenAPIRoute route) {
         Operation operation = route.getOperation();
         System.out.println("Found Operation " + operation.getOperationId());
-        Handler<RoutingContext> handler =
-                Utils.getRouteHandler(operation.getOperationId()).orElse(new EchoHandler());
+        Handler<RoutingContext> handler = Utils.getRouteHandler(operation.getOperationId()).orElse(new EchoHandler());
         route.addHandler(handler);
         route.addFailureHandler(this::youScrewedUp);
     }
 
     /**
      * Handles the case when something goes wrong in the routing process.
-     * If there is a failure, it sets the appropriate status code and response message.
-     * If there is no failure, it sets the status code to 500 and returns a generic error message.
+     * If there is a failure, it sets the appropriate status code and response
+     * message.
+     * If there is no failure, it sets the status code to 500 and returns a generic
+     * error message.
      *
      * @param ctx the routing context
      */
