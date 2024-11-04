@@ -18,8 +18,8 @@
     <skipITs>true</skipITs>
     <surefire-plugin.version>3.0.0-M7</surefire-plugin.version>
     <!-- <vertx.version>4.5.10</vertx.version> -->
-    <!-- <vertx.version>5.0.0-SNAPSHOT</vertx.version> -->
-    <vertx.version>4.5.11-SNAPSHOT</vertx.version>
+    <vertx.version>5.0.0-SNAPSHOT</vertx.version>
+    <!-- <vertx.version>4.5.11-SNAPSHOT</vertx.version> -->
   </properties>
   <repositories>
     <repository>
@@ -60,6 +60,13 @@
     </dependency>
 
     <!-- Vert.x -->
+
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-core-logging</artifactId>
+      <version>${vertx.version}</version>
+    </dependency>
+
     <dependency>
       <groupId>io.vertx</groupId>
       <artifactId>vertx-web-openapi-router</artifactId>
